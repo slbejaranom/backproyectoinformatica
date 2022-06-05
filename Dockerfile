@@ -7,6 +7,7 @@ WORKDIR /app
 ENV FLASK_APP app.py
 
 COPY requirements.txt requirements.txt
+RUN apk add gcc musl-dev mariadb-connector-c-dev
 RUN pip3 install -r requirements.txt
 
 COPY . .

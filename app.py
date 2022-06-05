@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://informatica:informatica@backend/informatica'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://informatica:informatica@mysql/informatica'
 db = SQLAlchemy(app)
 
 class Pedido(db.Model):

@@ -68,7 +68,7 @@ def obtenerPedidos():
 #Obtener pedido por id
 @app.route("/pedidos/<id>")
 def obtenerPedidoPorId(id):
-    pedido = Pedido.query.filter(id = id)
+    pedido = Pedido.query.filter_by(id = id).first()
     if(pedido):
         return pedido, 200
     else:

@@ -56,6 +56,20 @@ db.create_all()
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug = True)
 
-@app.route("pedidos", methods=["GET"])
+#Obtener todos los pedidos
+@app.route("/pedidos", methods=["GET"])
 def obtenerPedidos():
     pedidos = Pedido.query.all()
+    if(pedidos):
+        return pedidos, 200
+    else:
+        return "No hay pedidos", 404
+
+#Obtener pedido por id
+@app.route("/pedidos/<id>")
+def obtenerPedidoPorId(id):
+    pedido = Pedido.query.filter(id = id)
+    if(pedido):
+        return pedido, 200
+    else:
+        return "No hay pedido con ese ID", 404

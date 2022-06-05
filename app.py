@@ -50,3 +50,10 @@ class PedidoReceta(db.Model):
     receta = db.Column(db.Integer, db.ForeignKey("receta.id"))
 
 db.create_all()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug = True)
+
+@app.route("pedidos", methods=["GET"])
+def obtenerPedidos():
+    pedidos = Pedido.query.all()

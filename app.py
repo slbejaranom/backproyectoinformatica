@@ -46,8 +46,8 @@ class Receta(db.Model):
 
 class PedidoReceta(db.Model):
     idItem = db.Column("id_item_pedido", db.Integer, primary_key = True) 
-    pedido_id = db.Column(db.Integer, db.ForeignKey("pedido.id"))
-    receta_id = db.Column(db.Integer, db.ForeignKey("receta.id"))
+    pedido_id = db.Column(db.Integer, db.ForeignKey("pedido.id_pedido"))
+    receta_id = db.Column(db.Integer, db.ForeignKey("receta.id_receta"))
 
 db.create_all()
 

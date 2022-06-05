@@ -38,11 +38,13 @@ class Pedido(db.Model):
 class Receta(db.Model):
     id = db.Column("id_receta", db.Integer, primary_key = True)
     descripcion = db.Column("descripcion", db.Text)
+    urlImagen = db.Column("url_imagen", db.Text)
     enPedidos = db.relationship("PedidoReceta", backref="receta")
 
     def __init__(self, receta):
         self.id = receta["id"]
         self.descripcion = receta["descripcion"]
+        self.urlImagen = receta["urlImagen"]
 
 class PedidoReceta(db.Model):
     idItem = db.Column("id_item_pedido", db.Integer, primary_key = True) 

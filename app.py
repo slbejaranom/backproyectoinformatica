@@ -108,11 +108,11 @@ def agregarPedido():
     try:
         pedido = Pedido(data)        
         db.session.add(pedido)
-        db.session.commit()
-        db.session.refresh(pedido)
-        print(pedido.asDict(), file=sys.stderr)
-        print("Llegué hasta acá sin ningún probelma", file=sys.stderr)
-        return json.dumps(pedido.asDict()), 200
+        db.session.commit()                
+        return json.dumps({
+            "statusCode":"200",
+            "menssage":"Insertado correctamente"
+        }), 200
     except Exception as ex:
         return "Verifique que todos los campos cumplan con la descripción", 400
 
@@ -125,9 +125,11 @@ def modificarPedido(id):
         try:
             pedido = Pedido(data)
             db.session.merge(pedido)
-            db.session.commit()
-            db.session.refresh(pedido)
-            return json.dumps(pedido.asDict()),200
+            db.session.commit()            
+            return json.dumps({
+                "statusCode":"200",
+                "menssage":"actualizado correctamente"
+            }),200
         except Exception as ex:
             return "Verifique que todos los campos cumplan con la descripción", 400
     else:

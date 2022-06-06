@@ -64,6 +64,7 @@ class Pedido(db.Model):
 
 class Receta(db.Model):
     id = db.Column("id_receta", db.Integer, primary_key = True)
+    nombre = db.Column("nombre", db.Text)
     descripcion = db.Column("descripcion", db.Text)
     urlImagen = db.Column("url_imagen", db.Text)
     enPedidos = db.relationship("PedidoReceta", backref="receta")
@@ -72,6 +73,14 @@ class Receta(db.Model):
         self.id = receta["id"]
         self.descripcion = receta["descripcion"]
         self.urlImagen = receta["urlImagen"]
+
+    def asDict(self):
+        return {
+            "id":self.id,
+            "nombre":self.nombre,
+            "descripcion":self.descripcion,
+            "urlImagen":self.urlImagen
+        }
 
 class PedidoReceta(db.Model):
     idItem = db.Column("id_item_pedido", db.Integer, primary_key = True) 
@@ -108,11 +117,11 @@ def agregarPedido():
     try:
         pedido = Pedido(data)        
         db.session.add(pedido)
-        db.session.commit()
-        db.session.refresh(pedido)
-        print(pedido.asDict(), file=sys.stderr)
-        print("Llegué hasta acá sin ningún probelma", file=sys.stderr)
-        return json.dumps(pedido.asDict()), 200
+        db.session.commit()                
+        return json.dumps({
+            "statusCode":"200",
+            "menssage":"Insertado correctamente"
+        }), 200
     except Exception as ex:
         return "Verifique que todos los campos cumplan con la descripción", 400
 
@@ -124,10 +133,13 @@ def modificarPedido(id):
     if(pedido):
         try:
             pedido = Pedido(data)
+            pedido.id = id
             db.session.merge(pedido)
-            db.session.commit()
-            db.session.refresh(pedido)
-            return json.dumps(pedido.asDict()),200
+            db.session.commit()            
+            return json.dumps({
+                "statusCode":"200",
+                "menssage":"actualizado correctamente"
+            }),200
         except Exception as ex:
             return "Verifique que todos los campos cumplan con la descripción", 400
     else:

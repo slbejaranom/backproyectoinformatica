@@ -79,6 +79,7 @@ def obtenerPedidoPorId(id):
 #Agregar nuevo pedido
 @app.route("/pedidos", methods=["POST"])
 def agregarPedido():
+    print(request.data)
     try:
         pedido = Pedido(request.data)
         db.session.add(pedido)

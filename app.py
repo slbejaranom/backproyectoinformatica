@@ -104,10 +104,10 @@ def agregarPedido():
     data = json.loads(request.data)
     print(data, file=sys.stderr)
     try:
-        pedido = Pedido(data)
-        print(pedido, file=sys.stderr)
+        pedido = Pedido(data)        
         db.session.add(pedido)
         db.session.commit()
+        print("Llegué hasta acá sin ningún probelma", file=sys.stderr)
         return json.dumps(pedido.asDict()), 200
     except Exception as ex:
         return "Verifique que todos los campos cumplan con la descripción", 400

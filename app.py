@@ -85,7 +85,7 @@ if __name__ == "__main__":
 def obtenerPedidos():
     pedidos = Pedido.query.all()
     if(pedidos):
-        return json.dumps(pedidos.asDict()), 200
+        return json.dumps(list(map(lambda pedido : pedido.asDict(), pedidos))), 200
     else:
         return "No hay pedidos", 404
 

@@ -87,6 +87,11 @@ class PedidoReceta(db.Model):
     pedido_id = db.Column(db.Integer, db.ForeignKey("pedido.id_pedido"))
     receta_id = db.Column(db.Integer, db.ForeignKey("receta.id_receta"))
 
+    def __init__(self, item):
+        self.idItem = item["idItem"]
+        self.pedido_id = item["pedido_id"]
+        self.receta_id = item["receta_id"]
+
 db.create_all()
 
 if __name__ == "__main__":

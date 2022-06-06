@@ -3,10 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import request
 import json
 import sys
-
+from flask_cors import CORS
 from sqlalchemy import JSON
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://informatica:informatica@mysql/informatica'
 db = SQLAlchemy(app)

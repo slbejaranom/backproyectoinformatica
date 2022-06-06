@@ -68,7 +68,7 @@ if __name__ == "__main__":
 def obtenerPedidos():
     pedidos = Pedido.query.all()
     if(pedidos):
-        return pedidos, 200
+        return json.dumps(pedidos), 200
     else:
         return "No hay pedidos", 404
 
@@ -89,7 +89,7 @@ def agregarPedido():
         pedido = Pedido(data)
         db.session.add(pedido)
         db.session.commit()
-        return pedido, 200
+        return json.dumps(pedido), 200
     except Exception as ex:
         return "Verifique que todos los campos cumplan con la descripción", 400
 

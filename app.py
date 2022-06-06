@@ -28,7 +28,10 @@ class Pedido(db.Model):
     itemsPedido = db.relationship("PedidoReceta", backref="pedido")
 
     def __init__(self, pedido):
-        self.id = pedido["id"]
+        if(pedido["id"]):
+            self.id = pedido["id"]
+        else:
+            self.id = 0
         self.numPersonas = pedido["numPersonas"]
         self.cantRecetasSemana = pedido["cantRecetasSemana"]
         self.correo = pedido["correo"]
@@ -107,6 +110,7 @@ def agregarPedido():
         pedido = Pedido(data)        
         db.session.add(pedido)
         db.session.commit()
+        print(pedido.asDict(), file=sys.stderr)
         print("Llegué hasta acá sin ningún probelma", file=sys.stderr)
         return json.dumps(pedido.asDict()), 200
     except Exception as ex:
@@ -120,6 +124,7 @@ def modificarPedido(id):
     if(pedido):
         try:
             pedido = Pedido(data)
+            db.session.erge(pedido)
             db.session.commit()
             return json.dumps(pedido.asDict()),200
         except Exception as ex:

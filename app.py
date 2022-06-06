@@ -124,6 +124,7 @@ def modificarPedido(id):
     if(pedido):
         try:
             pedido = Pedido(data)
+            pedido.id = id
             db.session.merge(pedido)
             db.session.commit()            
             return json.dumps({

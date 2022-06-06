@@ -76,14 +76,13 @@ def obtenerPedidos():
 def obtenerPedidoPorId(id):
     pedido = Pedido.query.filter_by(id = id).first()
     if(pedido):
-        return pedido, 200
+        return json.dumps(pedido), 200
     else:
         return "No hay pedido con ese ID", 404
 
 #Agregar nuevo pedido
 @app.route("/pedidos", methods=["POST"])
-def agregarPedido():
-    print(request.data, file=sys.stderr)
+def agregarPedido():    
     data = json.loads(request.data)
     try:
         pedido = Pedido(data)
@@ -96,11 +95,13 @@ def agregarPedido():
 #Modificar pedido
 @app.route("/pedidos/<id>", methods=["PUT"])
 def modificarPedido(id):
+    data = json.loads(request.data)
     pedido = Pedido.query.filter_by(id=id).first()
     if(pedido):
         try:
-            pedido = Pedido(request.data)
+            pedido = Pedido(data)
             db.session.commit()
+            return json.dumps(pedido),200
         except Exception as ex:
             return "Verifique que todos los campos cumplan con la descripción", 400
     else:

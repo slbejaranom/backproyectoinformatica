@@ -113,9 +113,17 @@ def obtenerPedidoPorId(id):
 #Agregar nuevo pedido
 @app.route("/pedidos", methods=["POST"])
 def agregarPedido():    
-    data = json.loads(request.data)    
+    data = json.loads(request.data) 
+    itemsPedido = []
+    for item in data["itemsPedido"]:
+        itemsPedido.append(PedidoReceta(item))
+    data["itemsPedido"] = [] 
+    print("Lista de items creada", file = sys.stderr)          
     try:
-        pedido = Pedido(data)        
+        print("Llegue hasta antes de crear el pedido", file = sys.stderr)
+        pedido = Pedido(data)      
+        pedido.itemsPedido = itemsPedido
+        print("Llegue hasta después de crear el pedido", file = sys.stderr)
         db.session.add(pedido)
         db.session.commit()                
         return json.dumps({

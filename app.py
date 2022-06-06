@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask import request
 
 app = Flask(__name__)
 
@@ -66,10 +67,34 @@ def obtenerPedidos():
         return "No hay pedidos", 404
 
 #Obtener pedido por id
-@app.route("/pedidos/<id>")
+@app.route("/pedidos/<id>", methods=["GET"])
 def obtenerPedidoPorId(id):
     pedido = Pedido.query.filter_by(id = id).first()
     if(pedido):
         return pedido, 200
+    else:
+        return "No hay pedido con ese ID", 404
+
+#Agregar nuevo pedido
+@app.route("/pedidos", methods=["POST"])
+def agregarPedido():
+    try:
+        pedido = Pedido(request.data)
+        db.session.add(pedido)
+        db.session.commit()
+        return pedido, 200
+    except Exception as ex:
+        return "Verifique que todos los campos cumplan con la descripción", 400
+
+#Modificar pedido
+@app.route ("/pedidos/<id>", methods=["PUT"])
+def modificarPedido(id):
+    pedido = Pedido.query.filter_by(id=id).first()
+    if(pedido):
+        try:
+            pedido = Pedido(request.data)
+            db.session.commit()
+        except Exception as ex:
+            return "Verifique que todos los campos cumplan con la descripción", 400
     else:
         return "No hay pedido con ese ID", 404

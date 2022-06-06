@@ -4,7 +4,7 @@ from flask import request
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://informatica:informatica@mysql/informatica'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://informatica:informatica@localhost/informatica'
 db = SQLAlchemy(app)
 
 class Pedido(db.Model):
@@ -35,6 +35,7 @@ class Pedido(db.Model):
         self.numTarjeta = pedido["numTarjeta"]
         self.cvv = pedido["cvv"]
         self.expiracion = pedido["expiracion"]
+        self.itemsPedido = pedido["itemsPedido"]
 
 class Receta(db.Model):
     id = db.Column("id_receta", db.Integer, primary_key = True)
@@ -87,7 +88,7 @@ def agregarPedido():
         return "Verifique que todos los campos cumplan con la descripción", 400
 
 #Modificar pedido
-@app.route ("/pedidos/<id>", methods=["PUT"])
+@app.route("/pedidos/<id>", methods=["PUT"])
 def modificarPedido(id):
     pedido = Pedido.query.filter_by(id=id).first()
     if(pedido):

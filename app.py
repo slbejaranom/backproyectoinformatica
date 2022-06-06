@@ -102,8 +102,10 @@ def obtenerPedidoPorId(id):
 @app.route("/pedidos", methods=["POST"])
 def agregarPedido():    
     data = json.loads(request.data)
+    print(data, file=sys.strderr)
     try:
         pedido = Pedido(data)
+        print(pedido, file=sys.strderr)
         db.session.add(pedido)
         db.session.commit()
         return json.dumps(pedido.asDict()), 200

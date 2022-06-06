@@ -1,6 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask import request
+import json
+import sys
+
+from sqlalchemy import JSON
 
 app = Flask(__name__)
 
@@ -79,7 +83,8 @@ def obtenerPedidoPorId(id):
 #Agregar nuevo pedido
 @app.route("/pedidos", methods=["POST"])
 def agregarPedido():
-    print(request.data)
+    print(request.data, file=sys.stderr)
+    data = json.loads(request.data)
     try:
         pedido = Pedido(request.data)
         db.session.add(pedido)

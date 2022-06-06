@@ -3,10 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import request
 import json
 import sys
-
+from flask_cors import CORS
 from sqlalchemy import JSON
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://informatica:informatica@mysql/informatica'
 db = SQLAlchemy(app)
@@ -67,7 +68,7 @@ if __name__ == "__main__":
 def obtenerPedidos():
     pedidos = Pedido.query.all()
     if(pedidos):
-        return pedidos, 200
+        return json.dumps(pedidos), 200
     else:
         return "No hay pedidos", 404
 
@@ -76,31 +77,32 @@ def obtenerPedidos():
 def obtenerPedidoPorId(id):
     pedido = Pedido.query.filter_by(id = id).first()
     if(pedido):
-        return pedido, 200
+        return json.dumps(pedido), 200
     else:
         return "No hay pedido con ese ID", 404
 
 #Agregar nuevo pedido
 @app.route("/pedidos", methods=["POST"])
-def agregarPedido():
-    print(request.data, file=sys.stderr)
+def agregarPedido():    
     data = json.loads(request.data)
     try:
         pedido = Pedido(data)
         db.session.add(pedido)
         db.session.commit()
-        return pedido, 200
+        return json.dumps(pedido), 200
     except Exception as ex:
         return "Verifique que todos los campos cumplan con la descripción", 400
 
 #Modificar pedido
 @app.route("/pedidos/<id>", methods=["PUT"])
 def modificarPedido(id):
+    data = json.loads(request.data)
     pedido = Pedido.query.filter_by(id=id).first()
     if(pedido):
         try:
-            pedido = Pedido(request.data)
+            pedido = Pedido(data)
             db.session.commit()
+            return json.dumps(pedido),200
         except Exception as ex:
             return "Verifique que todos los campos cumplan con la descripción", 400
     else:

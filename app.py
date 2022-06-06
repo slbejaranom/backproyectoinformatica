@@ -86,7 +86,7 @@ def agregarPedido():
     print(request.data, file=sys.stderr)
     data = json.loads(request.data)
     try:
-        pedido = Pedido(request.data)
+        pedido = Pedido(data)
         db.session.add(pedido)
         db.session.commit()
         return pedido, 200

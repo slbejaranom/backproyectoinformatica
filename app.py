@@ -116,7 +116,8 @@ def agregarPedido():
     data = json.loads(request.data) 
     itemsPedido = []
     for item in data["itemsPedido"]:
-        itemsPedido.append(PedidoReceta(item))      
+        itemsPedido.append(PedidoReceta(item))
+    data["itemsPedido"] = [] 
     print("Lista de items creada", file = sys.stderr)          
     try:
         print("Llegue hasta antes de crear el pedido", file = sys.stderr)

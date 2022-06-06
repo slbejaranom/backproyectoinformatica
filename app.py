@@ -28,7 +28,7 @@ class Pedido(db.Model):
     itemsPedido = db.relationship("PedidoReceta", backref="pedido")
 
     def __init__(self, pedido):
-        if(pedido["id"]):
+        if("id" in pedido):
             self.id = pedido["id"]
         else:
             self.id = 0

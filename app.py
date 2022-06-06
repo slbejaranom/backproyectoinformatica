@@ -104,12 +104,12 @@ def obtenerPedidoPorId(id):
 #Agregar nuevo pedido
 @app.route("/pedidos", methods=["POST"])
 def agregarPedido():    
-    data = json.loads(request.data)
-    print(data, file=sys.stderr)
+    data = json.loads(request.data)    
     try:
         pedido = Pedido(data)        
         db.session.add(pedido)
         db.session.commit()
+        db.session.refresh(pedido)
         print(pedido.asDict(), file=sys.stderr)
         print("Llegué hasta acá sin ningún probelma", file=sys.stderr)
         return json.dumps(pedido.asDict()), 200
@@ -124,8 +124,9 @@ def modificarPedido(id):
     if(pedido):
         try:
             pedido = Pedido(data)
-            db.session.erge(pedido)
+            db.session.merge(pedido)
             db.session.commit()
+            db.session.refresh(pedido)
             return json.dumps(pedido.asDict()),200
         except Exception as ex:
             return "Verifique que todos los campos cumplan con la descripción", 400

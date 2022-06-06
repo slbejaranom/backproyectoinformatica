@@ -144,3 +144,58 @@ def modificarPedido(id):
             return "Verifique que todos los campos cumplan con la descripción", 400
     else:
         return "No hay pedido con ese ID", 404
+
+##RECETAS
+
+#Obtener todas las recetas
+@app.route("/recetas", methods=["GET"])
+def obtenerRecetas():
+    recetas = Receta.query.all()
+    if(recetas):
+        return json.dumps(list(map(lambda receta : receta.asDict(), recetas))), 200
+    else:
+        return "No hay recetas", 404
+
+#Obtener receta por id
+@app.route("/recetas/<id>", methods=["GET"])
+def obtenerRecetaPorId(id):
+    receta = Receta.query.filter_by(id = id).first()
+    if(receta):
+        return json.dumps(receta.asDict()), 200
+    else:
+        return "No hay receta con ese ID", 404
+
+#Agregar nueva receta
+@app.route("/recetas", methods=["POST"])
+def agregarReceta():    
+    data = json.loads(request.data)    
+    try:
+        receta = Receta(data)        
+        db.session.add(receta)
+        db.session.commit()                
+        return json.dumps({
+            "statusCode":"200",
+            "menssage":"Insertado correctamente"
+        }), 200
+    except Exception as ex:
+        return "Verifique que todos los campos cumplan con la descripción", 400
+
+#Modificar receta
+@app.route("/receta/<id>", methods=["PUT"])
+def modificarReceta(id):
+    data = json.loads(request.data)
+    receta = Receta.query.filter_by(id=id).first()
+    if(receta):
+        try:
+            receta = Receta(data)
+            receta.id = id
+            db.session.merge(receta)
+            db.session.commit()            
+            return json.dumps({
+                "statusCode":"200",
+                "menssage":"actualizado correctamente"
+            }),200
+        except Exception as ex:
+            return "Verifique que todos los campos cumplan con la descripción", 400
+    else:
+        return "No hay receta con ese ID", 404

@@ -59,7 +59,7 @@ class Pedido(db.Model):
             "numTarjeta" : self.numTarjeta,
             "cvv" : self.cvv,
             "expiracion" : self.expiracion,
-            "itemsPedido": self.itemsPedido
+            "itemsPedido": self.itemsPedido.asDict()
         }
 
 class Receta(db.Model):
@@ -91,6 +91,14 @@ class PedidoReceta(db.Model):
         self.idItem = item["idItem"]
         self.pedido_id = item["pedido_id"]
         self.receta_id = item["receta_id"]
+
+    def asDict(self):
+        return {
+            "idItem":self.idItem,
+            "pedido_id":self.pedido_id,
+            "receta_id":self.receta_id
+        }
+
 
 db.create_all()
 
@@ -128,7 +136,7 @@ def agregarPedido():
         print("Llegue hasta antes de crear el pedido", file = sys.stderr)
         pedido = Pedido(data)      
         pedido.itemsPedido = itemsPedido
-        print("Llegue hasta después de crear el pedido", file = sys.stderr)
+        print("Llegue hasta después de crear el pedido", file = sys.stderr)        
         db.session.add(pedido)
         db.session.commit()                
         return json.dumps({

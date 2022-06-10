@@ -58,8 +58,8 @@ class Pedido(db.Model):
             "total" : self.total,
             "numTarjeta" : self.numTarjeta,
             "cvv" : self.cvv,
-            "expiracion" : self.expiracion,
-            "itemsPedido": self.itemsPedido.asDict()
+            "expiracion" : self.expiracion,            
+            "itemsPedido": list(map(lambda item : item.asDict(), self.itemsPedido))
         }
 
 class Receta(db.Model):
